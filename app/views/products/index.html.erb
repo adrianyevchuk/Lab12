@@ -1,0 +1,38 @@
+<head>    <%= stylesheet_link_tag "products", "data-turbo-track": "reload" %>
+</head>
+<% if notice %>
+  <aside id="notice"><%= notice %></aside>
+<% end %>
+<h1>Products</h1>
+<table>
+  <tfoot>
+  <h3>Chapter 6. Task A: Creating the Application • 80 report erratum • discuss</h3>
+  </tfoot>
+  <tbody>
+  <% @products.each do |product| %>
+    <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
+      <td class="image">
+        <%= image_tag(product.image_url, class: 'list_image') %>
+      </td>
+      <td class="description"><h2><%= product.title %></h2>
+        <p>
+          <%= truncate(strip_tags(product.description), length: 80) %>
+        </p></td>
+      <td class="actions">
+        <ul>
+          <li><%= link_to 'Show', product %></li>
+          <li><%= link_to 'Edit', edit_product_path(product) %></li>
+          <li>
+            <%= link_to 'Destroy', product, method: :delete, data: { confirm: 'Are you sure?' } %>
+          </li>
+        </ul>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+<div class="button_container">
+  <button type="button" class="new_product">
+    <%= link_to 'New Product', new_product_path %>
+  </button>
+</div>
