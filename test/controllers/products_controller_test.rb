@@ -1,11 +1,52 @@
 require "test_helper"
 
 class ProductsControllerTest < ActionDispatch::IntegrationTest
+  
+
   setup do
     @product = products(:one)
-    @title = "The Great Book #{rand(1000)}"
-  end
-
+@title = "The Great Book #{rand(1000)}"
+    end
+  def create
+    @product = Product.new(product_params)
+      respond_to do |format|
+        if @product.save
+          format.html { redirect_to @product,
+          notice: 'Product was successfully created.' }
+          format.json { render :show, status: :created,
+          location: @product }
+        else
+          puts @product.errors.full_messages
+          format.html { render :new }
+          format.json { render json: @product.errors,
+          status: :unprocessable_entity }
+    end
+    end
+    end
+    test "should create product" do
+      assert_difference('Product.count') do
+      post products_url, params: {
+      product: {
+      description: @product.description,
+      image_url: @product.image_url,
+      price: @product.price,
+      title: @title,
+      }
+      }
+      end
+      assert_redirected_to product_url(Product.last)
+      end
+      test "should update product" do
+        patch product_url(@product), params: {
+        product: {
+        description: @product.description,
+        image_url: @product.image_url,
+        price: @product.price,
+        title: @title,
+        }
+        }
+        assert_redirected_to product_url(@product)
+        end
   test "should get index" do
     get products_url
     assert_response :success
@@ -16,20 +57,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should create product" do
-    assert_difference("Product.count") do
-      post products_url, params: {
-        product: {
-          description: @product.description,
-          image_url: @product.image_url,
-          price: @product.price,
-          title: @title
-        }
-      }
-    end
 
-    assert_redirected_to product_url(Product.last)
-  end
 
   test "should show product" do
     get product_url(@product)
@@ -41,15 +69,11 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should update product" do
-    patch product_url(@product), params: {
-      product: {
-        description: @product.description,
-        image_url: @product.image_url,
-        price: @product.price,
-        title: @title }
-    }
-    assert_redirected_to product_url(@product)
+  test "can't delete product in cart" do
+    assert_difference('Product.count', 0) do
+      delete product_url(products(:two))
+    end
+    assert_redirected_to products_url
   end
 
   test "should destroy product" do
