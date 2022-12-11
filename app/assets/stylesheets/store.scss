@@ -32,6 +32,31 @@
       .price {
         font-size: 1.414em;
       }
+
+      div.price {
+        display: inline;
+      }
+
+      button {
+        height: 40px;
+        line-height: 20px;
+        background-color: #282;
+        border-radius: 10px;
+        border: solid thin #141;
+        color: white;
+        font-size: 0.8em;
+        padding: 0.354em 1em;
+      }
+
+      button:hover {
+        background-color: #141;
+        font-size: 0.9em;
+      }
+
+      form.button_to {
+        margin-left: 20px;
+        display: inline;
+      }
     }
   }
 }
